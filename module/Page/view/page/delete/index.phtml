@@ -1,0 +1,16 @@
+<?php
+$this->headTitle('Do you want to delete this page?');
+?>
+<div class="row">
+    <div class="col-md-12">
+        <legend><h2>Do you want to delete this category?</h2></legend>
+        <h4>Page Info:</h4>
+        <ul>
+            <li>Name: <?= $page->getPageName() ?></li>
+            <li>ID: <?= $page->getPageId() ?></li>
+        </ul>
+
+        <a class="btn btn-danger" href="<?= $this->url('page/delete', ['id' => $id], ['query' => ['confirm' => 'yes', 'redirect_url' => $redirect_url]]) ?>">Yes</a>
+        <a class="btn btn-default" href="<?= $this->url('page/delete', ['id' => $id], ['query' => ['confirm' => 'no', 'redirect_url' => $redirect_url]]) ?>">No</a>
+    </div>
+</div>

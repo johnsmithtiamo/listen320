@@ -1,0 +1,145 @@
+<?php
+/* @var $navigation Zend\Navigation\Navigation */
+/* @var $menu Zend\View\Helper\Navigation\Menu */
+/* @var $this Zend\View\Renderer\PhpRenderer */
+/* @var $navHelper \Zend\View\Helper\Navigation */
+$html = '';
+$minDepth = 0;
+$maxDepth = 3;
+
+$ulClass = ' class="nav"';
+
+
+$navHelper = $this->plugin('navigation');
+// find deepest active
+$found = $navHelper->findActive($container, $minDepth, $maxDepth);
+
+/* @var $escaper \Zend\View\Helper\EscapeHtmlAttr */
+$escaper = $this->plugin('escapeHtmlAttr');
+
+if ($found) {
+    $foundPage = $found['page'];
+    $foundDepth = $found['depth'];
+} else {
+    $foundPage = null;
+}
+
+// create iterator
+$iterator = new RecursiveIteratorIterator(
+        $container, RecursiveIteratorIterator::SELF_FIRST
+);
+
+$iterator->setMaxDepth($maxDepth);
+// iterate container
+$prevDepth = -1;
+foreach ($iterator as $page) {
+    /* @var $page \Zend\Navigation\Page\Mvc */
+    $depth = $iterator->getDepth();
+    $isActive = $page->isActive(true);
+    if ($depth < $minDepth || $page->getPermission() && !$this->isGranted($page->getPermission())) {
+        // page is below minDepth or not accepted by acl/visibility
+        continue;
+    }
+
+    // make sure indentation is correct
+    $depth -= $minDepth;
+    if ($depth > $prevDepth) {
+        // start new ul tag
+        if ($depth > 0) {
+
+            $html .= '<ul' . $ulClass . '>';
+        }
+    } elseif ($prevDepth > $depth) {
+        // close li/ul tags until we're at current depth
+        for ($i = $prevDepth; $i > $depth; $i--) {
+            $html .= ' </li></ul>';
+        }
+        // close previous li tag
+        $html .= '</li>';
+    } else {
+        // close previous li tag
+        $html .= '</li>';
+    }
+
+    // render li tag and page
+    $liClasses = [];
+
+    // Is page active?
+    if ($isActive) {
+        $liClasses[] = 'active';
+    }
+
+    // Add CSS class from page to <li>
+    if ($page->getClass()) {
+        $liClasses[] = $page->getClass();
+    }
+    $liClass = empty($liClasses) ? '' : ' class="' . $escaper(implode(' ', $liClasses)) . '"';
+    $html .= '<li' . $liClass . '>';
+
+    // get attribs for element
+    $attribs = [
+        'id' => $page->getId(),
+        'title' => $this->translate($page->getTitle(), $page->getTextDomain()),
+    ];
+
+    $href = $page->getHref();
+    if ($href) {
+        $element = 'a';
+        $attribs['href'] = $href;
+        $attribs['target'] = $page->getTarget();
+    } else {
+        $element = 'span';
+    }
+    $html .= '<' . $element;
+    foreach ($attribs as $key => $value) {
+        if (!$value) {
+            continue;
+        }
+        $html .= sprintf(' %1$s = "%2$s" ', $key, $value);
+    }
+    $html .= '>';
+    if ($depth === 0 && $page->icon) {
+        $html .= '<i class="' . $page->icon . '"></i> ';
+    }
+    $label = $this->translate($page->getLabel(), $page->getTextDomain());
+    $html .= $label;
+
+    if ($page->hasPages()) {
+        $html .= '<span class="fa arrow"></span>';
+    }
+    $html .= '</' . $element . '>';
+
+    // store as previous depth for next iteration
+    $prevDepth = $depth;
+}
+
+if ($html) {
+    // done iterating container; close open ul/li tags
+    for ($i = $prevDepth + 1; $i > 0; $i--) {
+        if ($i === 1) {
+            $html.='</li>';
+        } else {
+            $html .= '</li></ul>';
+        }
+    }
+}
+?>
+<div class="navbar-default sidebar" role="navigation">
+    <div class="sidebar-nav navbar-collapse">
+        <ul class="nav" id="side-menu">
+            <li class="sidebar-search">
+                <div class="input-group custom-search-form">
+                    <input type="text" class="form-control" placeholder="Search...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+                <!-- /input-group -->
+            </li>
+            <?= $html ?>
+        </ul>
+    </div>
+    <!-- /.sidebar-collapse -->
+</div>

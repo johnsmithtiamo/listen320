@@ -1,0 +1,48 @@
+<div class="row">
+    <div class="col-md-12">
+        <legend><h2>Page</h2></legend>
+        <?php
+        if (count($this->paginator)):
+            ?>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $redirect_url = urlencode($this->serverUrl(true));
+                    foreach ($this->paginator as $item):
+                        ?>
+                        <tr>
+                            <th scope="row"><?= $item->getPageId() ?></th>
+                            <td><?= $item->getPageName() ?></td>
+                            <td>
+                                <a href="<?= $this->url('page/edit', ['id' => $item->getPageId()]) ?>" title="Edit"><i class="fa fa-edit fa-fw"></i> Edit</a>
+                                <a href="<?= $this->url('page/delete', ['id' => $item->getPageId()], ['query' => ['redirect_url' => $redirect_url]]) ?>" class="text-danger" title="Delete"><i class="fa fa-trash-o fa-fw"></i> Delete</a>
+                            </td>
+                        </tr>
+                        <?php
+                    endforeach;
+                    ?>
+
+                </tbody>
+            </table>
+            <?php
+            echo $this->paginationControl(
+                    $this->paginator, 'Sliding', 'partial/bootstrap-paginator', ['route' => 'page/paging']
+            );
+        else:
+            ?>
+            <div class="alert alert-warning">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Warning!</strong> Page is empty.
+            </div>
+        <?php
+        endif;
+        ?>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+<?php
+$this->headTitle('Do you want to delete this storage?');
+?>
+<div class="row">
+    <div class="col-md-12">
+        <legend><h2>Do you want to delete this storage?</h2></legend>
+        <h4>Storage Info:</h4>
+        <ul>
+            <li>Name: <?= $storage->getStorageName() ?></li>
+            <li>ID: <?= $storage->getStorageId() ?></li>
+        </ul>
+
+        <a class="btn btn-danger" href="<?= $this->url('storage/delete', ['id' => $id], ['query' => ['confirm' => 'yes', 'redirect_url' => $redirect_url]]) ?>">Yes</a>
+        <a class="btn btn-default" href="<?= $this->url('storage/delete', ['id' => $id], ['query' => ['confirm' => 'no', 'redirect_url' => $redirect_url]]) ?>">No</a>
+    </div>
+</div>

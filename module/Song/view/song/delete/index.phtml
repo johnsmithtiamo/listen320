@@ -1,0 +1,16 @@
+<?php
+$this->headTitle('Do you want to delete this song?');
+?>
+<div class="row">
+    <div class="col-md-12">
+        <legend><h2>Do you want to delete this category?</h2></legend>
+        <h4>Song Info:</h4>
+        <ul>
+            <li>Name: <?= $song->getSongName() ?></li>
+            <li>ID: <?= $song->getSongId() ?></li>
+        </ul>
+
+        <a class="btn btn-danger" href="<?= $this->url('song/delete', ['id' => $id], ['query' => ['confirm' => 'yes', 'redirect_url' => $redirect_url]]) ?>">Yes</a>
+        <a class="btn btn-default" href="<?= $this->url('song/delete', ['id' => $id], ['query' => ['confirm' => 'no', 'redirect_url' => $redirect_url]]) ?>">No</a>
+    </div>
+</div>

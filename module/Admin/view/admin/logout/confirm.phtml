@@ -1,0 +1,14 @@
+<?php
+echo $this->partial('layout/header');
+?>
+<div class="container">
+    <div class="row">
+        <fieldset>
+            <legend><h2>Are you want to logout?</h2></legend>
+            <a href="<?php echo $this->url('default', ['controller' => 'logout', 'action' => 'confirm'], ['query' => ['ok' => 1]]) ?>" class="btn-info btn-lg">Yes</a>
+            <a href="<?php echo $this->url('default', ['controller' => 'logout', 'action' => 'confirm'], ['query' => ['ok' => 0]]) ?>" class="btn-default btn-lg">No</a>
+        </fieldset>
+    </div>
+</div>
+<?php
+echo $this->partial('layout/footer');

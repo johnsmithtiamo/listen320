@@ -1,0 +1,118 @@
+<?php
+$title = 'Edit category';
+$this->headTitle($title);
+$form->setAttribute('action', $this->url('category/edit', ['id' => $id]));
+$form->setAttribute('class', 'form-horizontal');
+$category = $form->get('category');
+$form->prepare();
+$flashMessengerPlugin = $this->flashMessenger()->getPluginFlashMessenger();
+?>
+<div class="row">
+    <?= $this->form()->openTag($form) ?>
+    <fieldset>
+        <legend><h2><?= $this->escapeHtml($title) ?></h2></legend>
+        <?php
+        // hiển thị thông báo có lỗi
+        echo $this->flashMessenger()
+                ->setMessageOpenFormat('<div %s><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>Error!</strong> ')
+                ->setMessageSeparatorString('')
+                ->setMessageCloseString('</div>')
+                ->renderCurrent('error', array('alert', 'alert-danger'));
+        $flashMessengerPlugin->clearCurrentMessages('error');
+        ?>
+        <?php
+        // hiển thị thông báo thành công
+        echo $this->flashMessenger()
+                ->setMessageOpenFormat('<div %s><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>Success!</strong> ')
+                ->setMessageSeparatorString('')
+                ->setMessageCloseString('</div>')
+                ->renderCurrent('success', array('alert', 'alert-success'));
+        $flashMessengerPlugin->clearCurrentMessages('success');
+        ?>
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="name">Category Name</label>
+            <div class="col-md-4">
+                <?= $this->formText($category->get('category_name')) ?>
+                <?= $this->formElementErrors()->render($category->get('category_name'), ['class' => 'help-block']) ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="slug">Category Slug</label>
+            <div class="col-md-4">
+                <?= $this->formText($category->get('category_slug')) ?>
+                <?= $this->formElementErrors()->render($category->get('category_slug'), ['class' => 'help-block']) ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="slug">Category Description</label>
+            <div class="col-md-4">
+                <?= $this->formTextarea($category->get('category_description')) ?>
+                <?= $this->formElementErrors()->render($category->get('category_description'), ['class' => 'help-block']) ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="visible">Visible</label>
+            <div class="col-md-4">
+                <?= $this->formSelect($category->get('category_visible')) ?>
+                <?= $this->formElementErrors()->render($category->get('category_visible'), ['class' => 'help-block']) ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="order">Order</label>
+            <div class="col-md-4">
+                <?= $this->formNumber($category->get('category_order')) ?>
+                <?= $this->formElementErrors()->render($category->get('category_order'), ['class' => 'help-block']) ?>
+            </div>
+        </div>
+
+        <hr/>
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="title">Title</label>
+            <div class="col-md-4">
+                <?= $this->formText($category->get('title')) ?>
+                <?= $this->formElementErrors()->render($category->get('title'), ['class' => 'help-block']) ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="description">Meta Description</label>
+            <div class="col-md-4">
+                <?= $this->formTextarea($category->get('meta_description')) ?>
+                <?= $this->formElementErrors()->render($category->get('meta_description'), ['class' => 'help-block']) ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="keywords">Meta Keywords</label>
+            <div class="col-md-4">
+                <?= $this->formText($category->get('meta_keywords')) ?>
+                <?= $this->formElementErrors()->render($category->get('meta_keywords'), ['class' => 'help-block']) ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="keywords">Meta Robots</label>
+            <div class="col-md-4">
+                <?= $this->formSelect($category->get('meta_robots')) ?>
+                <?= $this->formElementErrors()->render($category->get('meta_robots'), ['class' => 'help-block']) ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4 control-label" for="role"></label>
+            <div class="col-md-4">
+                <?= $this->formButton($form->get('submit'), 'Save') ?>
+                <?= $this->formReset($form->get('reset')); ?>
+                <a href="<?= $this->url('category/delete', ['id' => $id], ['query' => ['redirect_url' => \urlencode($this->serverUrl(true))]]) ?>" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash-o"></i> Delete</a>
+            </div>
+        </div>
+
+    </fieldset>
+    <?php
+    echo $this->formHidden($category->get('category_id'));
+    echo $this->formHidden($form->get('category_csrf'));
+    echo $this->form()->closeTag()
+    ?>
+</div>
