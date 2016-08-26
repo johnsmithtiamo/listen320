@@ -8,7 +8,6 @@ use Zend\EventManager\EventManager;
 use Zend\EventManager\EventManagerInterface;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Adapter\Driver\ResultInterface;
-use Zend\Serializer\Adapter\PhpSerialize;
 
 class PageCommand implements PageCommandInterface, EventManagerAwareInterface {
 
@@ -31,7 +30,7 @@ class PageCommand implements PageCommandInterface, EventManagerAwareInterface {
 
         // xử lý sự kiện trước khi insert bài hát
         $events->setEventPrototype($event);
-        $events->trigger(PageEvent::BEFORE_ZFSONGS_DELETE);
+        $events->trigger(PageEvent::BEFORE_ZFPAGES_DELETE);
 
         $sql = new Sql($this->db);
         $delete = $sql->delete(\Page\TABLE_NAME);
@@ -44,7 +43,7 @@ class PageCommand implements PageCommandInterface, EventManagerAwareInterface {
             'Database error occurred during page delete operation'
             );
         }
-        $events->trigger(PageEvent::AFTER_ZFSONGS_DELETE);
+        $events->trigger(PageEvent::AFTER_ZFPAGES_DELETE);
     }
 
     public function insertPage(Page $page) {
@@ -55,7 +54,7 @@ class PageCommand implements PageCommandInterface, EventManagerAwareInterface {
 
         // xử lý sự kiện trước khi insert bài hát
         $events->setEventPrototype($event);
-        $events->trigger(PageEvent::BEFORE_ZFSONGS_INSERT);
+        $events->trigger(PageEvent::BEFORE_ZFPAGES_INSERT);
 
         $sql = new Sql($this->db, \Page\TABLE_NAME);
         $insert = $sql->insert();
@@ -82,7 +81,7 @@ class PageCommand implements PageCommandInterface, EventManagerAwareInterface {
         }
         $page->setPageId($result->getGeneratedValue());
         // xử lý sự kiện sau khi insert bài hát
-        $events->trigger(PageEvent::AFTER_ZFSONGS_INSERT);
+        $events->trigger(PageEvent::AFTER_ZFPAGES_INSERT);
         return $page;
     }
 
@@ -98,7 +97,7 @@ class PageCommand implements PageCommandInterface, EventManagerAwareInterface {
         $events->setEventPrototype($event);
 
         // xử lý sự kiện trước khi update bài hát
-        $events->trigger(PageEvent::BEFORE_ZFSONGS_UPDATE);
+        $events->trigger(PageEvent::BEFORE_ZFPAGES_UPDATE);
 
         $sql = new Sql($this->db);
         $update = $sql->update(\Page\TABLE_NAME);
@@ -127,7 +126,7 @@ class PageCommand implements PageCommandInterface, EventManagerAwareInterface {
             );
         }
         // xử lý sự kiện sau khi update bài hát
-        $events->trigger(PageEvent::AFTER_ZFSONGS_UPDATE);
+        $events->trigger(PageEvent::AFTER_ZFPAGES_UPDATE);
         return $pageNew;
     }
 

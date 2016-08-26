@@ -10,8 +10,8 @@ use Page\Model\PageEvent;
 class DefaultPageCommandListener extends AbstractListenerAggregate {
 
     public function attach(EventManagerInterface $events, $priority = 1) {
-        $this->listeners[] = $events->attach(PageEvent::BEFORE_ZFSONGS_INSERT, [$this, 'filterPageSlug']);
-        $this->listeners[] = $events->attach(PageEvent::BEFORE_ZFSONGS_UPDATE, [$this, 'filterPageSlug']);
+        $this->listeners[] = $events->attach(PageEvent::BEFORE_ZFPAGES_INSERT, [$this, 'filterPageSlug']);
+        $this->listeners[] = $events->attach(PageEvent::BEFORE_ZFPAGES_UPDATE, [$this, 'filterPageSlug']);
     }
 
     public function filterPageSlug(PageEvent $event) {

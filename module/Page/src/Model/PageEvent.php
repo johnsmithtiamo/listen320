@@ -8,17 +8,17 @@ use Zend\Db\Adapter\AdapterInterface;
 class PageEvent extends Event {
 
     // Insert event
-    const BEFORE_ZFSONGS_INSERT = 'before.zfsongs.insert';
-    const AFTER_ZFSONGS_INSERT = 'after.zfsongs.insert';
+    const BEFORE_ZFPAGES_INSERT = 'before.zfpages.insert';
+    const AFTER_ZFPAGES_INSERT = 'after.zfpages.insert';
     // Update event
-    const BEFORE_ZFSONGS_UPDATE = 'before.zfsongs.update';
-    const AFTER_ZFSONGS_UPDATE = 'after.zfsongs.update';
+    const BEFORE_ZFPAGES_UPDATE = 'before.zfpages.update';
+    const AFTER_ZFPAGES_UPDATE = 'after.zfpages.update';
     // Delete event
-    const BEFORE_ZFSONGS_DELETE = 'before.zfsongs.delete';
-    const AFTER_ZFSONGS_DELETE = 'after.zfsongs.delete';
+    const BEFORE_ZFPAGES_DELETE = 'before.zfpages.delete';
+    const AFTER_ZFPAGES_DELETE = 'after.zfpages.delete';
 
-    private $songNew;
-    private $songOld;
+    private $pageNew;
+    private $pageOld;
     private $adapter;
 
     /**
@@ -26,16 +26,16 @@ class PageEvent extends Event {
      * @return Page
      */
     public function getPageNew() {
-        return $this->songNew;
+        return $this->pageNew;
     }
 
     /**
      *
-     * @param \Page\Model\Page $songNew
+     * @param \Page\Model\Page $pageNew
      * @return \Page\Model\PageEvent
      */
-    public function setPageNew(Page $songNew) {
-        $this->songNew = $songNew;
+    public function setPageNew(Page $pageNew) {
+        $this->pageNew = $pageNew;
         return $this;
     }
 
@@ -52,16 +52,16 @@ class PageEvent extends Event {
      * @return Page
      */
     public function getPageOld() {
-        return $this->songOld;
+        return $this->pageOld;
     }
 
     /**
      *
-     * @param \Page\Model\Page $songOld
+     * @param \Page\Model\Page $pageOld
      * @return \Page\Model\PageEvent
      */
-    public function setPageOld(Page $songOld) {
-        $this->songOld = $songOld;
+    public function setPageOld(Page $pageOld) {
+        $this->pageOld = $pageOld;
         return $this;
     }
 
